@@ -17,7 +17,7 @@
 
     function MinutesToHours() {
         const [amount, setAmount] = React.useState(0);
-        const [inverted, setInverted] = React.useState(false);
+        const [inverted, setInverted] = React.useState();
 
         const onChange = (event) => {
             console.log("somebody wrote");
@@ -47,7 +47,7 @@
                 </div>
 
                 <div>
-                    <h3> you input minutes: {amount}</h3>
+                    <h3> you input number: {amount}</h3>
                     <label htmlFor="hours">Hours</label>
                     <input
                         value={inverted ? amount : Math.round(amount / 60)}
@@ -67,13 +67,71 @@
         );
     }
     function KmtoMIles() {
-        return <h3>KM 2 M</h3>;
+
+        // const [km, setKm] = React.useState(0);
+        const [amount, setAmount] = React.useState(0);
+        const [inverted, setInverted] =  React.useState(false);
+        const kmTM =0.621371;
+        
+        const onChange = (event) => {
+            const value = event.target.value;
+            console.log(value);
+            console.log(inverted);
+            const converted = inverted ? amount : amount / kmTM
+            console.log(converted);
+            setAmount(value);
+        };
+
+        const onReset = () => {
+            //amount = 0;
+            setAmount(0);
+        }
+  
+        const onChangeMode = () => {
+            const value = event.target.value;
+            console.log(value);
+            console.log(event);
+
+            setInverted((current) => !current);
+            setAmount(0);
+        }
+        return (
+            <div>
+                <h3>KM 2 M</h3>
+                <div>
+                    <input
+                        value={inverted ?  amount / kmTM :amount}
+                        type="number"
+                        placeholder="km"
+                        onChange={onChange}
+                        disabled = {inverted === true}
+                    />
+                </div>
+                <h3> you input number: {amount}</h3>
+                <div>
+                    <input
+                        value={!inverted ? amount * kmTM: amount}
+                        type="number"
+                        placeholder="mile"
+                        onChange={onChange}
+                        disabled = {inverted === false}
+                    />
+                </div>
+                <button onClick={onReset}>
+                    reset
+                    </button>
+                <button onClick={onChangeMode}>
+                    mode change
+                </button>
+            </div>
+        );
     }
+
     function SelectOption() {
         return <h3>Please select your units</h3>;
     }
     function App() {
-        const [index, setIndex] = React.useState("xx");
+        const [index, setIndex] = React.useState("1");
         const onSelect = (event) => {
             // setIndex = setFunction();
             // console.log(event.target.value);
@@ -86,10 +144,6 @@
                     <option value="0">Minutes & Hours</option>
                     <option value="1">Km & Miles</option>
                 </select>
-
-                {
-                    //index === "0"? <MinutesToHours/>: <KmtoMIles/>
-                }
                 {index === "xx" ? <SelectOption /> : null}
                 {index === "0" ? <MinutesToHours /> : null}
                 {index === "1" ? <KmtoMIles /> : null}
